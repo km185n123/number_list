@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:number_list/core/widgets/buttons/primary_button.dart';
 import 'package:number_list/core/widgets/cards/base_card.dart';
 import 'package:number_list/core/widgets/cards/gradient_card.dart';
+import 'package:number_list/features/home/presentation/bloc/home_bloc.dart';
+import 'package:number_list/features/home/presentation/bloc/home_event.dart';
+import 'package:number_list/features/home/presentation/bloc/home_state.dart';
 
 import 'package:number_list/l10n/app_localizations.dart';
 
@@ -13,57 +18,70 @@ class GlobalTotalSection extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colors = Theme.of(context).colorScheme;
 
-    return BaseCard(
-      padding: EdgeInsets.zero,
-      child: Column(
-        children: [
-          GradientCard(
-            child: Column(
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.globalTotal,
-                  style: textTheme.labelSmall,
-                ),
-                Text(
-                  "1,245",
-                  style: textTheme.displayLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        String totalValue = "...";
+        if (state is HomeLoaded) {
+          totalValue = NumberFormat.decimalPattern().format(state.total);
+        } else if (state is HomeError) {
+          totalValue = "Error"; // Or handle error appropriately
+        }
+
+        return BaseCard(
+          padding: EdgeInsets.zero,
+          child: Column(
+            children: [
+              GradientCard(
+                child: Column(
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.accumulatedCount,
-                      style: textTheme.labelSmall?.copyWith(
-                        color: colors.onSurfaceVariant,
-                      ),
+                      AppLocalizations.of(context)!.globalTotal,
+                      style: textTheme.labelSmall,
                     ),
                     Text(
-                      AppLocalizations.of(context)!.lastUpdated,
-                      style: textTheme.labelSmall?.copyWith(
-                        color: colors.outline,
+                      totalValue,
+                      style: textTheme.displayLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
-                PrimaryButton(
-                  label: AppLocalizations.of(context)!.resetAll,
-                  onPressed: () {},
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.accumulatedCount,
+                          style: textTheme.labelSmall?.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!.lastUpdated,
+                          style: textTheme.labelSmall?.copyWith(
+                            color: colors.outline,
+                          ),
+                        ),
+                      ],
+                    ),
+                    PrimaryButton(
+                      label: AppLocalizations.of(context)!.resetAll,
+                      onPressed: () {
+                        context.read<HomeBloc>().add(ResetNumbers());
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

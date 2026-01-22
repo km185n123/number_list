@@ -1,29 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:number_list/core/theme/app_theme.dart';
+import 'package:number_list/features/home/data/datasources/numbers_local_datasource.dart';
+import 'package:number_list/features/home/data/repositories/numbers_repository_impl.dart';
+import 'package:number_list/features/home/domain/usecases/calculate_total_usecase.dart';
+import 'package:number_list/features/home/domain/usecases/get_numbers_usecase.dart';
+import 'package:number_list/features/home/domain/usecases/increment_number_usecase.dart';
+import 'package:number_list/features/home/domain/usecases/reset_numbers_usecase.dart';
+import 'package:number_list/features/home/presentation/bloc/home_bloc.dart';
+import 'package:number_list/features/home/presentation/bloc/home_event.dart';
 import 'package:number_list/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:number_list/features/home/presentation/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(const NumberListApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+
+  // Dependencies
+  final localDataSource = NumbersLocalDataSourceImpl(prefs);
+  final repository = NumbersRepositoryImpl(localDataSource);
+
+  final getNumbersUseCase = GetNumbersUseCase(repository);
+  final incrementNumberUseCase = IncrementNumberUseCase(repository);
+  final resetNumbersUseCase = ResetNumbersUseCase(repository);
+  final calculateTotalUseCase = CalculateTotalUseCase();
+
+  runApp(
+    NumberListApp(
+      homeBloc: HomeBloc(
+        getNumbersUseCase: getNumbersUseCase,
+        incrementNumberUseCase: incrementNumberUseCase,
+        resetNumbersUseCase: resetNumbersUseCase,
+        calculateTotalUseCase: calculateTotalUseCase,
+      )..add(LoadNumbers()),
+    ),
+  );
+}
 
 class NumberListApp extends StatelessWidget {
-  const NumberListApp({super.key});
+  final HomeBloc homeBloc;
+
+  const NumberListApp({super.key, required this.homeBloc});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      home: const HomeScreen(),
+    return BlocProvider.value(
+      value: homeBloc,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        home: const HomeScreen(),
+      ),
     );
   }
 }

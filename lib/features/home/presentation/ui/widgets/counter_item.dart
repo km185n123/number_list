@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:number_list/features/home/presentation/bloc/home_bloc.dart';
+import 'package:number_list/features/home/presentation/bloc/home_event.dart';
 import 'package:number_list/l10n/app_localizations.dart';
 import 'package:number_list/core/widgets/avatars/index_avatar.dart';
 import 'package:number_list/core/widgets/buttons/icon_circle_button.dart';
@@ -42,7 +45,12 @@ class CounterItem extends StatelessWidget {
               ],
             ),
           ),
-          IconCircleButton(icon: Icons.add_circle_outline, onPressed: () {}),
+          IconCircleButton(
+            icon: Icons.add_circle_outline,
+            onPressed: () {
+              context.read<HomeBloc>().add(IncrementNumber(index));
+            },
+          ),
         ],
       ),
     );
