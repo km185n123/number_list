@@ -3,6 +3,8 @@ import 'package:number_list/core/widgets/buttons/primary_button.dart';
 import 'package:number_list/core/widgets/cards/base_card.dart';
 import 'package:number_list/core/widgets/cards/gradient_card.dart';
 
+import 'package:number_list/l10n/app_localizations.dart';
+
 class GlobalTotalSection extends StatelessWidget {
   const GlobalTotalSection({super.key});
 
@@ -18,7 +20,10 @@ class GlobalTotalSection extends StatelessWidget {
           GradientCard(
             child: Column(
               children: [
-                Text("GLOBAL TOTAL", style: textTheme.labelSmall),
+                Text(
+                  AppLocalizations.of(context)!.globalTotal,
+                  style: textTheme.labelSmall,
+                ),
                 Text(
                   "1,245",
                   style: textTheme.displayLarge?.copyWith(
@@ -37,20 +42,23 @@ class GlobalTotalSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "ACCUMULATED COUNT",
+                      AppLocalizations.of(context)!.accumulatedCount,
                       style: textTheme.labelSmall?.copyWith(
                         color: colors.onSurfaceVariant,
                       ),
                     ),
                     Text(
-                      "Last updated 2 mins ago",
+                      AppLocalizations.of(context)!.lastUpdated,
                       style: textTheme.labelSmall?.copyWith(
                         color: colors.outline,
                       ),
                     ),
                   ],
                 ),
-                PrimaryButton(label: "Reset All", onPressed: () {}),
+                PrimaryButton(
+                  label: AppLocalizations.of(context)!.resetAll,
+                  onPressed: () {},
+                ),
               ],
             ),
           ),

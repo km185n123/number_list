@@ -1,0 +1,16 @@
+{
+    "globalTotal": "GLOBAL TOTAL",
+    "accumulatedCount": "ACCUMULATED COUNT",
+    "lastUpdated": "Last updated 2 mins ago",
+    "resetAll": "Reset All",
+    "individualCounters": "Individual Counters",
+    "tapToIncrement": "Tap a card to increment its value",
+    "value": "Value: {value}",
+    "@value": {
+        "placeholders": {
+            "value": {
+                "type": "int"
+            }
+        }
+    }
+}

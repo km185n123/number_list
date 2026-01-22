@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:number_list/core/widgets/labels/section_title.dart';
 import '../widgets/counter_item.dart';
+import 'package:number_list/l10n/app_localizations.dart';
 
 class CountersSection extends StatelessWidget {
   const CountersSection({super.key});
@@ -11,9 +12,9 @@ class CountersSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionTitle(
-            title: "Individual Counters",
-            subtitle: "Tap a card to increment its value",
+          SectionTitle(
+            title: AppLocalizations.of(context)!.individualCounters,
+            subtitle: AppLocalizations.of(context)!.tapToIncrement,
           ),
           const SizedBox(height: 16),
           Expanded(

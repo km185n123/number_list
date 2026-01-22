@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:number_list/core/theme/app_theme.dart';
+import 'package:number_list/l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:number_list/features/home/presentation/home_screen.dart';
 
 void main() => runApp(const NumberListApp());
@@ -11,6 +13,13 @@ class NumberListApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,

@@ -1,0 +1,9 @@
+{
+    "globalTotal": "TOTAL GLOBAL",
+    "accumulatedCount": "CONTEO ACUMULADO",
+    "lastUpdated": "Última actualización hace 2 min",
+    "resetAll": "Reiniciar Todo",
+    "individualCounters": "Contadores Individuales",
+    "tapToIncrement": "Toca una tarjeta para incrementar su valor",
+    "value": "Valor: {value}"
+}
