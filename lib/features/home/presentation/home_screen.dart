@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:number_list/features/home/presentation/sections/counters_section.dart';
-import 'package:number_list/features/home/presentation/sections/global_total_section.dart';
+import 'package:number_list/features/home/presentation/ui/sections/counters_section.dart';
+import 'package:number_list/features/home/presentation/ui/sections/global_total_section.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
